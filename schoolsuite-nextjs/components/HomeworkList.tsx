@@ -3,6 +3,13 @@
 import { useState } from "react";
 import Homework from "@/lib/domain/Homework";
 import { Priority } from "@/lib/domain/Priority";
+import {
+    Pencil,
+    Trash2,
+    AlertCircle,
+    Calendar,
+    CircleDot
+} from "lucide-react";
 
 interface HomeworkListProps {
     homeworks: Homework[];
@@ -24,7 +31,7 @@ export function HomeworkList({ homeworks, onEdit, onDelete, onToggleComplete }: 
         switch (priority) {
             case Priority.URGENT:
                 return {
-                    emoji: "🔴",
+                    iconColor: 'fill-red-500 text-red-500',
                     label: "Urgent",
                     bgColor: 'bg-red-100 dark:bg-red-950/50',
                     textColor: 'text-red-700 dark:text-red-400',
@@ -32,7 +39,7 @@ export function HomeworkList({ homeworks, onEdit, onDelete, onToggleComplete }: 
                 };
             case Priority.HIGH:
                 return {
-                    emoji: "🟠",
+                    iconColor: 'fill-orange-500 text-orange-500',
                     label: "High",
                     bgColor: 'bg-orange-100 dark:bg-orange-950/50',
                     textColor: 'text-orange-700 dark:text-orange-400',
@@ -40,7 +47,7 @@ export function HomeworkList({ homeworks, onEdit, onDelete, onToggleComplete }: 
                 };
             case Priority.MEDIUM:
                 return {
-                    emoji: "🟡",
+                    iconColor: 'fill-yellow-500 text-yellow-500',
                     label: "Medium",
                     bgColor: 'bg-yellow-100 dark:bg-yellow-950/50',
                     textColor: 'text-yellow-700 dark:text-yellow-400',
@@ -48,7 +55,7 @@ export function HomeworkList({ homeworks, onEdit, onDelete, onToggleComplete }: 
                 };
             case Priority.LOW:
                 return {
-                    emoji: "🟢",
+                    iconColor: 'fill-green-500 text-green-500',
                     label: "Low",
                     bgColor: 'bg-green-100 dark:bg-green-950/50',
                     textColor: 'text-green-700 dark:text-green-400',
@@ -73,33 +80,22 @@ export function HomeworkList({ homeworks, onEdit, onDelete, onToggleComplete }: 
         <div className="space-y-4">
             {/* Filter Tabs - Mobile optimized */}
             <div className="flex gap-1 sm:gap-2 border-b border-gray-200 dark:border-zinc-800 overflow-x-auto">
-                <button
-                    onClick={() => setFilter('all')}
-                    className={`px-3 sm:px-4 py-2 font-medium text-sm sm:text-base transition-all whitespace-nowrap ${filter === 'all'
-                            ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
-                            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-                        }`}
-                >
-                    All ({homeworks.length})
-                </button>
-                <button
-                    onClick={() => setFilter('pending')}
-                    className={`px-3 sm:px-4 py-2 font-medium text-sm sm:text-base transition-all whitespace-nowrap ${filter === 'pending'
-                            ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
-                            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-                        }`}
-                >
-                    Pending ({homeworks.filter(h => !h.isCompleted).length})
-                </button>
-                <button
-                    onClick={() => setFilter('completed')}
-                    className={`px-3 sm:px-4 py-2 font-medium text-sm sm:text-base transition-all whitespace-nowrap ${filter === 'completed'
-                            ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
-                            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-                        }`}
-                >
-                    Completed ({homeworks.filter(h => h.isCompleted).length})
-                </button>
+                {['all', 'pending', 'completed'].map((f) => (
+                    <button
+                        key={f}
+                        onClick={() => setFilter(f as any)}
+                        className={`px-3 sm:px-4 py-2 font-medium text-sm sm:text-base capitalize transition-all whitespace-nowrap ${filter === f
+                                ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
+                                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                            }`}
+                    >
+                        {f} ({
+                            f === 'all' ? homeworks.length :
+                                f === 'pending' ? homeworks.filter(h => !h.isCompleted).length :
+                                    homeworks.filter(h => h.isCompleted).length
+                        })
+                    </button>
+                ))}
             </div>
 
             {/* Empty State or List */}
@@ -160,15 +156,17 @@ export function HomeworkList({ homeworks, onEdit, onDelete, onToggleComplete }: 
                                             <div className="flex gap-2 sm:gap-2 flex-shrink-0">
                                                 <button
                                                     onClick={() => onEdit(homework)}
-                                                    className="flex-1 sm:flex-none px-3 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 rounded-lg transition-all touch-manipulation"
+                                                    className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 rounded-lg transition-all touch-manipulation"
                                                 >
-                                                    ✏️ Edit
+                                                    <Pencil size={16} />
+                                                    <span>Edit</span>
                                                 </button>
                                                 <button
                                                     onClick={() => onDelete(homework.id)}
-                                                    className="flex-1 sm:flex-none px-3 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-all touch-manipulation"
+                                                    className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-all touch-manipulation"
                                                 >
-                                                    🗑️ Delete
+                                                    <Trash2 size={16} />
+                                                    <span>Delete</span>
                                                 </button>
                                             </div>
                                         </div>
@@ -184,7 +182,7 @@ export function HomeworkList({ homeworks, onEdit, onDelete, onToggleComplete }: 
                                                 ${priorityConfig.borderColor}
                                                 transition-all
                                             `}>
-                                                <span className="text-sm">{priorityConfig.emoji}</span>
+                                                <CircleDot size={14} className={priorityConfig.iconColor} />
                                                 <span>{priorityConfig.label}</span>
                                             </span>
                                             <span className={`
@@ -199,12 +197,12 @@ export function HomeworkList({ homeworks, onEdit, onDelete, onToggleComplete }: 
                                             `}>
                                                 {overdueStatus ? (
                                                     <>
-                                                        <span className="text-sm">⚠️</span>
+                                                        <AlertCircle size={14} className="text-red-500" />
                                                         <span>Overdue</span>
                                                     </>
                                                 ) : (
                                                     <>
-                                                        <span className="text-sm">📅</span>
+                                                        <Calendar size={14} className="text-gray-500 dark:text-gray-400" />
                                                         <span className="whitespace-nowrap">{formatDate(homework.dueDate)}</span>
                                                     </>
                                                 )}

@@ -5,6 +5,7 @@ import { useHomeworks } from "@/hooks/useHomeworks";
 import { HomeworkForm } from "@/components/HomeworkForm";
 import { HomeworkList } from "@/components/HomeworkList";
 import Homework from "@/lib/domain/Homework";
+import { Plus, X } from "lucide-react";
 
 export default function HomeworkPage() {
     const { homeworks, loading, addHomework, updateHomework, deleteHomework, toggleComplete } = useHomeworks();
@@ -56,9 +57,24 @@ export default function HomeworkPage() {
                         setShowForm(!showForm);
                         setEditingHomework(null);
                     }}
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                    className={`
+                        flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors
+                        ${showForm
+                            ? 'bg-gray-200 dark:bg-zinc-800 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-zinc-700'
+                            : 'bg-blue-600 hover:bg-blue-700 text-white'}
+                    `}
                 >
-                    {showForm ? 'Cancel' : '+ Add Homework'}
+                    {showForm ? (
+                        <>
+                            <X size={18} />
+                            <span>Cancel</span>
+                        </>
+                    ) : (
+                        <>
+                            <Plus size={18} />
+                            <span>Add Homework</span>
+                        </>
+                    )}
                 </button>
             </div>
 
@@ -78,6 +94,8 @@ export default function HomeworkPage() {
                 onEdit={(homework) => {
                     setEditingHomework(homework);
                     setShowForm(false);
+                    // Scroll to top to see edit form
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 onDelete={handleDelete}
                 onToggleComplete={toggleComplete}

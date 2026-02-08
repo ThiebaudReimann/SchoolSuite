@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 
 export default function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
     const { user, loading } = useAuth();
     const router = useRouter();
 
@@ -47,10 +48,12 @@ export default function AuthenticatedLayout({ children }: { children: React.Reac
                 <Sidebar
                     isOpen={sidebarOpen}
                     onClose={() => setSidebarOpen(false)}
+                    isCollapsed={sidebarCollapsed}
+                    onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
                 />
 
                 {/* Main Content */}
-                <main className="flex-1 overflow-y-auto bg-gray-50 dark:bg-zinc-950 p-6 transition-colors">
+                <main className="flex-1 overflow-y-auto bg-gray-50 dark:bg-zinc-950 p-6 transition-all duration-300">
                     {children}
                 </main>
             </div>

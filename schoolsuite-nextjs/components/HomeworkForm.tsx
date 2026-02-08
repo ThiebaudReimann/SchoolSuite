@@ -6,6 +6,12 @@ import { parseDate, today, getLocalTimeZone } from "@internationalized/date";
 import type { DateValue } from "@react-types/calendar";
 import { Priority } from "@/lib/domain/Priority";
 import Homework from "@/lib/domain/Homework";
+import {
+    CircleDot,
+    Pencil,
+    PlusCircle,
+    CheckCircle2
+} from "lucide-react";
 
 interface HomeworkFormProps {
     onSubmit: (homework: Omit<Homework, 'id'>) => Promise<void>;
@@ -18,28 +24,28 @@ const priorityOptions = [
     {
         value: Priority.LOW,
         label: "Low",
-        emoji: "🟢",
+        iconColor: "fill-green-500 text-green-500",
         color: "border-green-500 bg-green-50 dark:bg-green-950/30 hover:bg-green-100 dark:hover:bg-green-900/40",
         activeColor: "border-green-600 bg-green-100 dark:bg-green-900/50 ring-2 ring-green-500"
     },
     {
         value: Priority.MEDIUM,
         label: "Medium",
-        emoji: "🟡",
+        iconColor: "fill-yellow-500 text-yellow-500",
         color: "border-yellow-500 bg-yellow-50 dark:bg-yellow-950/30 hover:bg-yellow-100 dark:hover:bg-yellow-900/40",
         activeColor: "border-yellow-600 bg-yellow-100 dark:bg-yellow-900/50 ring-2 ring-yellow-500"
     },
     {
         value: Priority.HIGH,
         label: "High",
-        emoji: "🟠",
+        iconColor: "fill-orange-500 text-orange-500",
         color: "border-orange-500 bg-orange-50 dark:bg-orange-950/30 hover:bg-orange-100 dark:hover:bg-orange-900/40",
         activeColor: "border-orange-600 bg-orange-100 dark:bg-orange-900/50 ring-2 ring-orange-500"
     },
     {
         value: Priority.URGENT,
         label: "Urgent",
-        emoji: "🔴",
+        iconColor: "fill-red-500 text-red-500",
         color: "border-red-500 bg-red-50 dark:bg-red-950/30 hover:bg-red-100 dark:hover:bg-red-900/40",
         activeColor: "border-red-600 bg-red-100 dark:bg-red-900/50 ring-2 ring-red-500"
     }
@@ -107,8 +113,18 @@ export function HomeworkForm({ onSubmit, onCancel, initialData, submitLabel = "A
 
     return (
         <div className="bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 dark:border-zinc-800 p-4 sm:p-6 shadow-sm transition-all">
-            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4 sm:mb-6">
-                {initialData ? "✏️ Edit Homework" : "➕ Add New Homework"}
+            <h2 className="flex items-center gap-2 text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4 sm:mb-6">
+                {initialData ? (
+                    <>
+                        <Pencil size={20} className="text-blue-600 dark:text-blue-400" />
+                        <span>Edit Homework</span>
+                    </>
+                ) : (
+                    <>
+                        <PlusCircle size={20} className="text-blue-600 dark:text-blue-400" />
+                        <span>Add New Homework</span>
+                    </>
+                )}
             </h2>
 
             <Form onSubmit={handleSubmit}>
@@ -157,7 +173,7 @@ export function HomeworkForm({ onSubmit, onCancel, initialData, submitLabel = "A
                                         touch-manipulation min-h-[80px] sm:min-h-0
                                     `}
                                 >
-                                    <span className="text-2xl sm:text-3xl mb-1">{opt.emoji}</span>
+                                    <CircleDot size={32} className={`mb-1 ${opt.iconColor}`} />
                                     <span className={`text-xs sm:text-sm font-medium ${priority === opt.value
                                             ? 'text-gray-900 dark:text-gray-100'
                                             : 'text-gray-700 dark:text-gray-300'
@@ -175,9 +191,10 @@ export function HomeworkForm({ onSubmit, onCancel, initialData, submitLabel = "A
                             variant="primary"
                             isDisabled={submitting}
                             UNSAFE_style={{ flex: 1 }}
-                            UNSAFE_className="min-h-[44px] touch-manipulation"
+                            UNSAFE_className="min-h-[44px] touch-manipulation flex items-center justify-center gap-2"
                         >
-                            {submitting ? "Saving..." : submitLabel}
+                            <CheckCircle2 size={18} />
+                            <span>{submitting ? "Saving..." : submitLabel}</span>
                         </Button>
                         {onCancel && (
                             <Button
