@@ -1,11 +1,28 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
   <defs>
-    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#003366;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#0055aa;stop-opacity:1" />
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0F172A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1E293B;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accent-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366F1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#A855F7;stop-opacity:1" />
     </linearGradient>
   </defs>
-  <rect width="512" height="512" rx="128" fill="url(#grad)"/>
-  <path d="M150 150 L362 150 L362 362 L150 362 Z" fill="none" stroke="#ffffff" stroke-width="20"/>
-  <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="240" fill="#ffffff">S</text>
+  
+  <!-- Background Shape: Smooth Squircle -->
+  <rect width="512" height="512" rx="120" fill="url(#bg-grad)"/>
+  
+  <!-- Stylized graduation cap / Book symbol -->
+  <!-- The diamond top (mortarboard) -->
+  <path d="M256 120L410 210L256 300L102 210L256 120Z" fill="url(#accent-grad)" />
+  
+  <!-- The cap base / Pages -->
+  <path d="M140 250V330C140 330 200 370 256 370C312 370 372 330 372 330V250L256 315L140 250Z" fill="white" fill-opacity="0.9" />
+  
+  <!-- Tassel Detail -->
+  <path d="M410 210V300C410 300 410 320 395 320C380 320 380 305 380 305V290" stroke="#FBBF24" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Subtle Glow/Highlight -->
+  <path d="M256 135L380 210L256 285L132 210L256 135Z" fill="white" fill-opacity="0.1" />
 </svg>
