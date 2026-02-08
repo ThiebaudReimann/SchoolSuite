@@ -12,8 +12,10 @@ import {
     PlusCircle,
     CheckCircle2
 } from "lucide-react";
+import { logEvent } from "@/firebase";
 
 interface HomeworkFormProps {
+
     onSubmit: (homework: Omit<Homework, 'id'>) => Promise<void>;
     onCancel?: () => void;
     initialData?: Homework;
@@ -97,7 +99,14 @@ export function HomeworkForm({ onSubmit, onCancel, initialData, submitLabel = "A
                 isCompleted: initialData?.isCompleted || false
             } as Omit<Homework, 'id'>);
 
+            if (initialData) {
+                logEvent("edit_homework", { subject, priority });
+            } else {
+                logEvent("add_homework", { subject, priority });
+            }
+
             // Reset form if not editing
+
             if (!initialData) {
                 setSubject("");
                 setDescription("");
@@ -175,8 +184,8 @@ export function HomeworkForm({ onSubmit, onCancel, initialData, submitLabel = "A
                                 >
                                     <CircleDot size={32} className={`mb-1 ${opt.iconColor}`} />
                                     <span className={`text-xs sm:text-sm font-medium ${priority === opt.value
-                                            ? 'text-gray-900 dark:text-gray-100'
-                                            : 'text-gray-700 dark:text-gray-300'
+                                        ? 'text-gray-900 dark:text-gray-100'
+                                        : 'text-gray-700 dark:text-gray-300'
                                         }`}>
                                         {opt.label}
                                     </span>

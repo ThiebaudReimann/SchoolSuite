@@ -13,6 +13,7 @@ import {
     Divider,
 } from "@react-spectrum/s2";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { logEvent } from "@/firebase";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -24,6 +25,7 @@ export default function LoginPage() {
         e.preventDefault();
         try {
             await signIn(email, password);
+            logEvent("login", { method: "email" });
             toast.success("Successfully logged in!");
             router.push("/");
         } catch (err: any) {
@@ -34,12 +36,14 @@ export default function LoginPage() {
     const handleGoogleSignIn = async () => {
         try {
             await signInWithGoogle();
+            logEvent("login", { method: "google" });
             toast.success("Successfully signed in with Google!");
             router.push("/");
         } catch (err: any) {
             toast.error(getFirebaseErrorMessage(err.code));
         }
     };
+
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 p-4 relative flex flex-col items-center justify-center transition-colors">
