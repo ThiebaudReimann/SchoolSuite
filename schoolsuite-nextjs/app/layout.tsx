@@ -5,6 +5,8 @@ import { ClientProvider } from "./provider";
 import { headers } from 'next/headers';
 import { Toaster } from "sonner";
 
+import Link from "next/link";
+
 const funnelDisplay = Funnel_Display({
   variable: "--font-funnel-display",
   subsets: ["latin"],
@@ -34,7 +36,6 @@ export const viewport: Viewport = {
   userScalable: false,
 };
 
-
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -45,12 +46,31 @@ export default async function RootLayout({
   const lang = acceptLanguage?.split(/[,;]/)[0] || 'en-US';
   return (
     <html lang={lang} suppressHydrationWarning>
-      <body className={`${funnelDisplay.variable} antialiased`}>
+      <body className={`${funnelDisplay.variable} antialiased flex flex-col min-h-screen`}>
         <ClientProvider lang={lang}>
           <Toaster position="top-right" richColors />
-          {children}
+          <main className="flex-grow">
+            {children}
+          </main>
+          <footer className="py-6 px-4 border-t border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 transition-colors">
+            <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+              <p>© {new Date().getFullYear()} SchoolSuite. Alle Rechte vorbehalten.</p>
+              <nav className="flex gap-6">
+                <Link href="/imprint" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                  Impressum
+                </Link>
+                <Link href="/privacy" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                  Datenschutz
+                </Link>
+                <Link href="/terms" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                  AGB
+                </Link>
+              </nav>
+            </div>
+          </footer>
         </ClientProvider>
       </body>
     </html>
   );
 }
+
