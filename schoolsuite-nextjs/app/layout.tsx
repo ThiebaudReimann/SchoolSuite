@@ -12,6 +12,8 @@ const funnelDisplay = Funnel_Display({
   subsets: ["latin"],
 });
 
+import Script from "next/script";
+
 export const metadata: Metadata = {
   title: "SchoolSuite",
   description: "SchoolSuite - Your School Management System",
@@ -47,7 +49,15 @@ export default async function RootLayout({
   return (
     <html lang={lang} suppressHydrationWarning>
       <body className={`${funnelDisplay.variable} antialiased flex flex-col min-h-screen`}>
+        <Script
+          id="Cookiebot"
+          src="https://consent.cookiebot.com/uc.js"
+          data-cbid="095decca-cee4-406b-9ddb-c953f1192f3d"
+          data-blockingmode="auto"
+          strategy="beforeInteractive"
+        />
         <ClientProvider lang={lang}>
+
           <Toaster position="top-right" richColors />
           <main className="flex-grow">
             {children}
