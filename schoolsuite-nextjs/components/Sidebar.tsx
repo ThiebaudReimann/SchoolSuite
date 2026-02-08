@@ -108,13 +108,15 @@ export function Sidebar({
                             )}
                         </button>
 
-                        <button
+                        <Link
+                            href="/settings"
+                            onClick={onClose}
                             title={isCollapsed ? "Settings" : undefined}
                             className={`flex items-center gap-3 px-3 py-3 rounded-lg w-full text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-all ${isCollapsed ? 'justify-center' : ''}`}
                         >
                             <Settings size={24} className="shrink-0" />
                             {!isCollapsed && <span className="truncate">Settings</span>}
-                        </button>
+                        </Link>
 
                         <button
                             onClick={() => logout()}

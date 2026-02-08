@@ -27,8 +27,8 @@ service cloud.firestore {
     
     // Homeworks collection rules
     match /homeworks/{homeworkId} {
-      // Allow read if user owns the homework
-      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      // Allow read/list if user owns the homework
+      allow read: if isAuthenticated() && (resource == null || resource.data.userId == request.auth.uid);
       
       // Allow create if user is authenticated, owns the homework, and data is valid
       allow create: if isAuthenticated() 
@@ -43,6 +43,12 @@ service cloud.firestore {
       
       // Allow delete if user owns the homework
       allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+
+    // User settings and profile data
+    match /users/{userId} {
+      // Users can only read and write their own data
+      allow read, write: if isOwner(userId);
     }
     
     // Deny all other access by default
