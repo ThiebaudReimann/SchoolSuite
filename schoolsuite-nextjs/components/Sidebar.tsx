@@ -93,9 +93,18 @@ export function Sidebar({
 
                     {/* Bottom Section - Account & Settings */}
                     <div className={`p-4 border-t border-gray-200 dark:border-zinc-800 space-y-2 ${isCollapsed ? 'items-center' : ''}`}>
-                        <button
+                        <Link
+                            href="/account"
+                            onClick={onClose}
                             title={isCollapsed ? "Account" : undefined}
-                            className={`flex items-center gap-3 px-3 py-3 rounded-lg w-full text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-all ${isCollapsed ? 'justify-center' : ''}`}
+                            className={`
+                                flex items-center gap-3 px-3 py-3 rounded-lg w-full text-left transition-all
+                                ${isActive('/account')
+                                    ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 font-medium'
+                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800'
+                                }
+                                ${isCollapsed ? 'justify-center' : ''}
+                            `}
                         >
                             <User size={24} className="shrink-0" />
                             {!isCollapsed && (
@@ -106,7 +115,7 @@ export function Sidebar({
                                     </div>
                                 </div>
                             )}
-                        </button>
+                        </Link>
 
                         <Link
                             href="/settings"
