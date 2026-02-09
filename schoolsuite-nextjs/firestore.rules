@@ -50,6 +50,11 @@ service cloud.firestore {
       // Users can only read and write their own data
       allow read, write: if isOwner(userId);
     }
+
+    // Dashboard layouts collection rules
+    match /dashboards/{userId} {
+      allow read, write: if isOwner(userId);
+    }
     
     // Deny all other access by default
     match /{document=**} {
