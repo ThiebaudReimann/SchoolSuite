@@ -20,6 +20,8 @@ interface AuthContextType {
     signUp: (email: string, pass: string) => Promise<void>;
     logout: () => Promise<void>;
     resetPassword: (email: string) => Promise<void>;
+    updateUserProfile: (displayName: string) => Promise<void>;
+    deleteAccount: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -82,8 +84,43 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     };
 
+    const updateUserProfile = async (displayName: string) => {
+        if (!user) throw new Error("No user authenticated");
+        try {
+            const { updateProfile: firebaseUpdateProfile } = await import("firebase/auth");
+            await firebaseUpdateProfile(user, { displayName });
+            // User object should be updated automatically by onAuthStateChanged,
+            // but sometimes it needs a manual refresh or just waiting.
+            // Firebase Auth usually updates the user object in place.
+            setUser({ ...user, displayName } as User);
+        } catch (error) {
+            console.error("Error updating user profile", error);
+            throw error;
+        }
+    };
+
+    const deleteAccount = async () => {
+        if (!user) throw new Error("No user authenticated");
+        try {
+            await user.delete();
+        } catch (error) {
+            console.error("Error deleting user account", error);
+            throw error;
+        }
+    };
+
     return (
-        <AuthContext.Provider value={{ user, loading, signInWithGoogle, signIn, signUp, logout, resetPassword }}>
+        <AuthContext.Provider value={{
+            user,
+            loading,
+            signInWithGoogle,
+            signIn,
+            signUp,
+            logout,
+            resetPassword,
+            updateUserProfile,
+            deleteAccount
+        }}>
             {children}
         </AuthContext.Provider>
     );
