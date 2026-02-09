@@ -34,6 +34,24 @@ const DEFAULT_LAYOUT: WidgetConfig[] = [
         y: 0,
         w: 1,
         h: 1
+    },
+    {
+        id: "homework-actions-1",
+        type: "homework-quick-actions",
+        title: "Homework Quick Actions",
+        x: 3,
+        y: 0,
+        w: 1,
+        h: 1
+    },
+    {
+        id: "homework-preview-1",
+        type: "homework-preview",
+        title: "Homework Preview",
+        x: 0,
+        y: 1,
+        w: 1,
+        h: 2
     }
 ];
 
