@@ -165,7 +165,7 @@ export default function AccountPage() {
                             <Text UNSAFE_className="font-semibold text-lg">{displayName || "No Name Set"}</Text>
                             <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
                                 <Mail size={14} />
-                                <Text size="S">{user.email}</Text>
+                                <Text UNSAFE_className="text-sm">{user.email}</Text>
                             </div>
                         </div>
                     </div>
